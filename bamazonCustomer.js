@@ -3,9 +3,11 @@ var inquirer = require('inquirer');
 // require mysql to use mysql tables/database
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
-  host     : 'example.org',
-  user     : 'bob',
-  password : 'secret'
+  host     : 'localhost',
+  port     :  3306,
+  user     : 'root',
+  password : '',
+  database : "bamazonDB"
 });
  
 connection.connect(function(err) {
@@ -16,3 +18,11 @@ connection.connect(function(err) {
  
   console.log('connected as id ' + connection.threadId);
 });
+
+function afterConnection() {
+    connection.query("SELECT * FROM products", function(err, res) {
+      if (err) throw err;
+      console.log(res);
+      connection.end();
+    });
+};
