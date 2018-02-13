@@ -1,0 +1,20 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "An Amazon style application for placing product orders through the command line.",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grssmnn2/bamazon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/grssmnn2/bamazon/issues"
+  },
+  "homepage": "https://github.com/grssmnn2/bamazon#readme"
+}
