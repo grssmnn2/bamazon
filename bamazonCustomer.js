@@ -11,18 +11,21 @@ var connection = mysql.createConnection({
 });
 
 connection.connect(function (err) {
-    if (err) throw err;
-    ask();
-})
-// ask user to place an order prompting for ID and number of items 
-function ask() {
-    // show table of items user has as options
-    connection.query("SELECT * FROM products", function (err, res) {
+    if (err) throw err;   
+       // show table of items user has as options
+       connection.query("SELECT * FROM products", function (err, res) {        
         if (err) throw err;
         for (var i = 0; i < res.length; i++) {
-            console.log("ID: " + res[i].item_id + " Product: " + res[i].product_name + " Price: $" + res[i].price + "\n");
-        }
+            console.log("ID: " + res[i].item_id + " Product: " + res[i].product_name + " Price: $" + res[i].price + "\n");       
+        }       
     });
+   
+});
+
+ask();
+
+// ask user to place an order prompting for ID and number of items 
+function ask() {   
     // prompt user for guess and keep track of user's remaining guess
     inquirer.prompt([
         {
@@ -59,15 +62,14 @@ function ask() {
                     console.log("Sorry, there is insufficient stock to fill your order.");
                     askAgain();
                 } else if (res[j].item_id === itemID && res[j].stock_quantity > requestedQuantity) {
-                    // connection.query(
+                    // connection.query(sql, function(err, result){
                     var newQuantity = +res[j].stock_quantity-requestedQuantity;
-                    "UPDATE products set ? WHERE ?",
-                    [{stock_quantity: newQuantity},{item_id: res[j].item_id}],
+                    "UPDATE products SET stock_quantity = newQuantity WHERE res[j].item_id = itemID"
+                    // [{stock_quantity: newQuantity},{item_id: res[j].item_id}],
                      console.log("Stock updated! " + "There are " + newQuantity + " items left.");
                     
-                    // );
+                    //   );
                     console.log("Thank you for your order. Your total is " + "$" + (+res[j].price * requestedQuantity));
-                    // connection.end();
                     askAgain();
                 }
             }
@@ -86,6 +88,7 @@ function askAgain() {
             if (answer.choice.toUpperCase() === "YES") {
                 ask();
             } else {
+                console.log("Thank you for shopping at Bamazon.");
                 connection.end();
             }
         })
