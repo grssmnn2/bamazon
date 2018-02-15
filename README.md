@@ -6,6 +6,7 @@
 ![initial table screen](images/Screen1.PNG)
 
 ## User selects which item to purchase
+#### Choose by entering a number value for the item ID and number quantity when prompted.
 ![user chooses item](images/itemselection.PNG)
 
 ## User is shown total stock remaining and price per order

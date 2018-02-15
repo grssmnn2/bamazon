@@ -58,17 +58,20 @@ function ask() {
         connection.query("SELECT * FROM products", function (err, res) {
             if (err) throw err;
             for (var j = 0; j < res.length; j++) {
-                if (res[j].item_id === itemID && res[j].stock_quantity < requestedQuantity) {
+                if (res[j].item_id === itemID && res[j].stock_quantity < requestedQuantity || res[j].stock_quantity===0) {
                     console.log("Sorry, there is insufficient stock to fill your order.");
                     askAgain();
                 } else if (res[j].item_id === itemID && res[j].stock_quantity > requestedQuantity) {
                     var newQuantity = +res[j].stock_quantity-requestedQuantity;
                     var newTotal = +res[j].price * requestedQuantity
-                    connection.query("UPDATE products SET stock_quantity = " + newQuantity + "WHERE item_id = " + itemID, function(err, res){
-                        console.log("Stock updated! " + "There are " + newQuantity + " items left.");
-                        console.log("Thank you for your order. Your total is " + "$" + newTotal);
-                        askAgain();
-                    })                   
+                    connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: newQuantity}, {item_id: itemID}],
+                    function(err){
+                      if(err)throw err;
+                      console.log("Stock updated! " + "There are " + newQuantity + " items left.");
+                                  console.log("Thank you for your order. Your total is " + "$" + newTotal);
+                                  askAgain();
+                    }
+                  )                 
                 }
             }
         })
