@@ -95,19 +95,9 @@ function askAgain() {
                 ask();
             } else {
                 console.log("Thank you for shopping at Bamazon.");
-                restock();
                 connection.end();
             }
         })
 
 }
-// restock items for next user if item count is zero
-function restock(){
-    connection.query("UPDATE products SET ?", [{stock_quantity: 100}, {stock_quantity: 0}],
-    function(err){
-        if(err)throw err;
-        console.log("Store has been restocked for next user.");
-      }
-    )};
-
 
