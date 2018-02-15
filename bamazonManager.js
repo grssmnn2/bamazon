@@ -52,8 +52,9 @@ function viewMenu() {
 
 // if selected view products
 // app should show all available items with ID, name, price, quantity
-function viewProducts() {
-    connection.connect(function (err) {
+
+    function viewProducts() {  
+        connection.connect(function (err) { 
         if (err) throw err;
         // show table of items user has as options
         connection.query("SELECT * FROM products", function (err, res) {
@@ -64,9 +65,9 @@ function viewProducts() {
             }
             viewMenu();
         });
-
     });
 }
+
 
 // if selected view low inventory
 // app shows items with inventory count lower than 5
@@ -161,3 +162,61 @@ function addInven(){
 
 // if selected add new product
 // allow manager to add completely new product to store
+function addProduct() {
+    // prompt for info about new item to add to store
+    inquirer
+      .prompt([
+        {
+          name: "item",
+          type: "input",
+          message: "What is the name of the product?"
+        },
+        {
+          name: "department",
+          type: "input",
+          message: "What home department does this item go in?"
+        },
+        {
+          name: "price",
+          type: "input",
+          message: "What is the selling price of this item?",
+          validate: function(value) {
+            if (isNaN(value) === false) {
+              return true;
+            }
+            return false;
+          }
+        },
+        {
+            name: "quantity",
+            type: "input",
+            message: "How many items are you adding?",
+            validate: function(value) {
+              if (isNaN(value) === false) {
+                return true;
+              }
+              return false;
+            }
+
+        }
+      ])
+      .then(function(answer) {
+        // when finished prompting, insert a new item into the db with that info
+        connection.query(
+          "INSERT INTO products SET ?",
+          {
+            product_name: answer.item,
+            department_name: answer.department,
+            price: answer.price,
+            stock_quantity: answer.quantity
+          },
+          function(err) {
+            if (err) throw err;
+            console.log("Your store now sells a new item! See below to see your item in action.");
+            // show user the menu again
+            productsOnly();
+            viewMenu();
+          }
+        );
+      });
+  }
