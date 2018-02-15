@@ -20,7 +20,7 @@ connection.connect(function (err) {
     });
   
 });
-
+// call ask function after table loads in command line
 setTimeout(function(){
     ask();
 },250);
