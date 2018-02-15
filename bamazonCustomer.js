@@ -32,6 +32,7 @@ function ask() {
             message: "Please enter the ID of the item you'd like to purchase\n",
             name: "itemID",
             type: "input",
+            // validate for number input only
             validate: function (value) {
                 if (!value.match(/^[0-9]+$/)) {
                     return ('Please only enter number values');
@@ -58,15 +59,19 @@ function ask() {
         connection.query("SELECT * FROM products", function (err, res) {
             if (err) throw err;
             for (var j = 0; j < res.length; j++) {
+                // if table ID equals requested item ID AND stock quantity is less than what user requests OR equals zero
                 if (res[j].item_id === itemID && res[j].stock_quantity < requestedQuantity || res[j].stock_quantity===0) {
                     console.log("Sorry, there is insufficient stock to fill your order.");
                     askAgain();
+                    // otherwise if table ID equals requested ID and there is enough stocked items
                 } else if (res[j].item_id === itemID && res[j].stock_quantity > requestedQuantity) {
                     var newQuantity = +res[j].stock_quantity-requestedQuantity;
                     var newTotal = +res[j].price * requestedQuantity
+                    // update table to display new stock amount
                     connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: newQuantity}, {item_id: itemID}],
                     function(err){
                       if(err)throw err;
+                    //   tell user their total and keep track of stock remaining (more for programmer than user)
                       console.log("Stock updated! " + "There are " + newQuantity + " items left.");
                                   console.log("Thank you for your order. Your total is " + "$" + newTotal);
                                   askAgain();
@@ -77,7 +82,7 @@ function ask() {
         })
     });
 }
-
+// ask again function runs program or ends program based on user input
 function askAgain() {
     inquirer.prompt({
         name: "choice",
