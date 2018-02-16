@@ -73,8 +73,8 @@ function ask() {
                       if(err)throw err;
                     //   tell user their total and keep track of stock remaining (more for programmer than user)
                       console.log("Stock updated! " + "There are " + newQuantity + " items left.");
-                                  console.log("Thank you for your order. Your total is " + "$" + newTotal);
-                                  askAgain();
+                      console.log("Thank you for your order. Your total is " + "$" + newTotal);
+                      askAgain();
                     }
                   )                 
                 }

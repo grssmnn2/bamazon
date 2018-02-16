@@ -9,7 +9,13 @@ var connection = mysql.createConnection({
     password: "",
     database: "bamazonDB"
 });
-manager();
+
+connection.connect(function(error){
+    if(error)throw error;
+    manager();
+});
+
+
 // ask if user is a manager (no password right now)
 function manager (){
     inquirer.prompt({
@@ -33,7 +39,7 @@ function viewMenu() {
         name: "choice",
         type: "rawlist",
         message: "What would you like to do?",
-        choices: ["View all products", "View low inventory", "Add to inventory", "Add new product"]
+        choices: ["View all products", "View low inventory", "Add to inventory", "Add new product", "Quit"]
     })
         .then(function (answer) {
             // run each function depending on user input
@@ -45,6 +51,8 @@ function viewMenu() {
                addInven();
             } else if (answer.choice === "Add new product") {
                 addProduct();
+            }else if (answer.choice==="Quit"){
+                connection.end();
             }
         })
 
@@ -54,8 +62,6 @@ function viewMenu() {
 // app should show all available items with ID, name, price, quantity
 
     function viewProducts() {  
-        connection.connect(function (err) { 
-        if (err) throw err;
         // show table of items user has as options
         connection.query("SELECT * FROM products", function (err, res) {
             if (err) throw err;
@@ -65,7 +71,7 @@ function viewMenu() {
             }
             viewMenu();
         });
-    });
+    
 }
 
 
