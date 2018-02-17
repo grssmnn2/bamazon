@@ -9,6 +9,7 @@ var connection = mysql.createConnection({
     password: "",
     database: "bamazonDB"
 });
+// initial connection, display table if no errors
 connection.connect(function (err) {
     if (err) throw err;   
        // show table of items user has as options
@@ -67,12 +68,11 @@ function ask() {
                 } else if (res[j].item_id === itemID && res[j].stock_quantity > requestedQuantity) {
                     var newQuantity = +res[j].stock_quantity-requestedQuantity;
                     var newTotal = +res[j].price * requestedQuantity
-                    // update table to display new stock amount
+                    // update table to new stock amount based on user order
                     connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: newQuantity}, {item_id: itemID}],
                     function(err){
                       if(err)throw err;
-                    //   tell user their total and keep track of stock remaining (more for programmer than user)
-                      console.log("Stock updated! " + "There are " + newQuantity + " items left.");
+                    //   tell user their total
                       console.log("Thank you for your order. Your total is " + "$" + newTotal);
                       askAgain();
                     }

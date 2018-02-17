@@ -29,6 +29,7 @@ function manager (){
                 viewMenu();
             } else if (answer.choice === "NO") {
                 console.log("Sorry, you do not have permission to view this site.");
+                connection.end();
             } 
         })
 
