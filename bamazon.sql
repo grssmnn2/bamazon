@@ -21,6 +21,15 @@ stock_quantity INTEGER(100),
   PRIMARY KEY(item_id)
 );
 
+CREATE TABLE departments(
+
+    department_id INTEGER(10) AUTO_INCREMENT NOT NULL,
+
+    department_name VARCHAR(30),
+    
+    over_head_costs INTEGER(10)
+);
+
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Loofah", "Bath Supplies", 3.00, 10);
 
